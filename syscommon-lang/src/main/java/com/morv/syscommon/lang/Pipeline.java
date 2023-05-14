@@ -1,4 +1,4 @@
-package com.morv.syscommon;
+package com.morv.syscommon.lang;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 
 
 public interface Pipeline<T> {
-    static <T> Pipeline<T> of(Collection<T> collection) {
-        return collection::forEach;
+    static <T> Pipeline<T> of(Iterable<T> iterable) {
+        return iterable::forEach;
     }
 
     static <T> Pipeline<T> of(T... args) {
@@ -76,14 +76,13 @@ public interface Pipeline<T> {
         return map;
     }
 
-    default Optional<T> findFirst(Predicate<T> predicate) {
+    default Optional<T> findFirst() {
         AtomicReference<T> reference = new AtomicReference<>();
         try {
             each(t -> {
-                if (predicate.test(t)) {
-                    reference.set(t);
-                    throw new StopException();
-                }
+                reference.set(t);
+                throw new StopException();
+
             });
         } catch (StopException e) {
             //
@@ -91,7 +90,7 @@ public interface Pipeline<T> {
         return Optional.ofNullable(reference.get());
     }
 
-    static class StopException extends RuntimeException {
+    class StopException extends RuntimeException {
 
     }
 

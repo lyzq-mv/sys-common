@@ -1,6 +1,6 @@
 package com.morv.syscommon.lang.test;
 
-import com.morv.syscommon.Pipeline;
+import com.morv.syscommon.lang.Pipeline;
 import org.testng.annotations.Test;
 
 import java.util.List;
